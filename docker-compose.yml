@@ -6,13 +6,15 @@ services:
       POSTGRES_PASSWORD: opscopilot
       POSTGRES_DB: opscopilot
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./sql/init_app.sql:/docker-entrypoint-initdb.d/init.sql
 
+  # PostGIS is only needed for the text-to-SQL module (Tier 2).
+  # It stays off by default to save RAM: docker compose --profile geo up -d
   geo_db:
     image: postgis/postgis:16-3.4
+    profiles: ["geo"]
     environment:
       POSTGRES_USER: geo_admin
       POSTGRES_PASSWORD: geo_admin

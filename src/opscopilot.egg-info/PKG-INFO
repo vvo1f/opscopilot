@@ -1,14 +1,18 @@
 Metadata-Version: 2.4
 Name: opscopilot
 Version: 0.1.0
+Summary: LLM-based assistant for document search, extraction and business process automation
 Requires-Python: >=3.11
 Requires-Dist: fastapi
 Requires-Dist: uvicorn[standard]
+Requires-Dist: pydantic>=2
 Requires-Dist: pydantic-settings
-Requires-Dist: psycopg[binary]
+Requires-Dist: psycopg[binary]>=3.1
 Requires-Dist: pgvector
-Requires-Dist: openai
+Requires-Dist: openai>=1.30
 Requires-Dist: python-multipart
+Provides-Extra: ml
+Requires-Dist: sentence-transformers; extra == "ml"
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: httpx; extra == "dev"

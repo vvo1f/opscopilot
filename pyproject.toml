@@ -1,18 +1,22 @@
 [project]
 name = "opscopilot"
 version = "0.1.0"
+description = "LLM-based assistant for document search, extraction and business process automation"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi",
   "uvicorn[standard]",
+  "pydantic>=2",
   "pydantic-settings",
-  "psycopg[binary]",
+  "psycopg[binary]>=3.1",
   "pgvector",
-  "openai",
+  "openai>=1.30",
   "python-multipart",
 ]
 
 [project.optional-dependencies]
+# embeddings pull in PyTorch, which is big, so they are opt-in
+ml = ["sentence-transformers"]
 dev = ["pytest", "httpx", "ruff"]
 
 [build-system]
@@ -24,3 +28,6 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

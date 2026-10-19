@@ -1,8 +1,16 @@
 README.md
 pyproject.toml
 src/opscopilot/__init__.py
+src/opscopilot/config.py
+src/opscopilot/embeddings.py
+src/opscopilot/main.py
 src/opscopilot.egg-info/PKG-INFO
 src/opscopilot.egg-info/SOURCES.txt
 src/opscopilot.egg-info/dependency_links.txt
 src/opscopilot.egg-info/requires.txt
 src/opscopilot.egg-info/top_level.txt
+src/opscopilot/llm/__init__.py
+src/opscopilot/llm/client.py
+src/opscopilot/llm/factory.py
+tests/test_health.py
+tests/test_llm_client.py

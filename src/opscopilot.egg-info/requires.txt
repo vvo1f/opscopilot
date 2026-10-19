@@ -1,12 +1,16 @@
 fastapi
 uvicorn[standard]
+pydantic>=2
 pydantic-settings
-psycopg[binary]
+psycopg[binary]>=3.1
 pgvector
-openai
+openai>=1.30
 python-multipart
 
 [dev]
 pytest
 httpx
 ruff
+
+[ml]
+sentence-transformers
