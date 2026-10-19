@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/opscopilot/__init__.py
+src/opscopilot.egg-info/PKG-INFO
+src/opscopilot.egg-info/SOURCES.txt
+src/opscopilot.egg-info/dependency_links.txt
+src/opscopilot.egg-info/requires.txt
+src/opscopilot.egg-info/top_level.txt

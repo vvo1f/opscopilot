@@ -1,0 +1,27 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: opscopilot
+      POSTGRES_PASSWORD: opscopilot
+      POSTGRES_DB: opscopilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./sql/init_app.sql:/docker-entrypoint-initdb.d/init.sql
+
+  geo_db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: geo_admin
+      POSTGRES_PASSWORD: geo_admin
+      POSTGRES_DB: geo
+    ports:
+      - "5433:5432"
+    volumes:
+      - geo_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  geo_data:
