@@ -18,6 +18,8 @@ dependencies = [
 # embeddings pull in PyTorch, which is big, so they are opt-in
 ml = ["sentence-transformers"]
 dev = ["pytest", "httpx", "ruff"]
+# synthetic data generator (phase 1)
+data = ["faker", "reportlab", "python-docx"]
 
 [build-system]
 requires = ["setuptools>=68"]

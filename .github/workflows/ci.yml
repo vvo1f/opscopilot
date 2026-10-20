@@ -10,6 +10,6 @@ jobs:
         with:
           python-version: "3.11"
       # no "ml" extra here: unit tests never load the embedding model
-      - run: pip install -e ".[dev]"
+      - run: pip install -e ".[dev,data]"
       - run: ruff check .
       - run: pytest

@@ -7,6 +7,7 @@ pydantic casts the types for us, so EMBEDDING_DIM=384 arrives as an int.
 Switching from the local model to a hosted API is only a .env change.
 """
 from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # the .env next to pyproject.toml, wherever the script is run from

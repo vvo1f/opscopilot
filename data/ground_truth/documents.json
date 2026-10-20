@@ -1,0 +1,454 @@
+[
+  {
+    "filename": "invoice_01_it.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "it",
+    "fields": {
+      "invoice_number": "INV-2026-313",
+      "issue_date": "2026-02-24",
+      "supplier": "Calbo-Pertile Group",
+      "customer": "Scialpi e figli",
+      "total_amount": "21850.20",
+      "vat_amount": "3940.20",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_02_it.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "it",
+    "fields": {
+      "invoice_number": "INV-2026-342",
+      "issue_date": "2026-04-16",
+      "supplier": "Ficino SPA",
+      "customer": "Paolucci, Curci e Pisano Group",
+      "total_amount": "19922.60",
+      "vat_amount": "3592.60",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_03_it.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "it",
+    "fields": {
+      "invoice_number": "INV-2026-398",
+      "issue_date": "2026-08-08",
+      "supplier": "Pulci, Galvani e Colletti e figli",
+      "customer": "Sorrentino-Cendron SPA",
+      "total_amount": "5483.90",
+      "vat_amount": "988.90",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_04_it.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "it",
+    "fields": {
+      "invoice_number": "INV-2026-438",
+      "issue_date": "2026-07-08",
+      "supplier": "Zaccardo-Omma e figli",
+      "customer": "Scaramucci, Sabbatini e Vattimo s.r.l.",
+      "total_amount": "16616.40",
+      "vat_amount": "2996.40",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_05_en.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "en",
+    "fields": {
+      "invoice_number": "INV-2026-477",
+      "issue_date": "2026-02-28",
+      "supplier": "Rodriguez-Higgins",
+      "customer": "Steele, Hicks and Lopez",
+      "total_amount": "4239.50",
+      "vat_amount": "764.50",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_06_en.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "en",
+    "fields": {
+      "invoice_number": "INV-2026-520",
+      "issue_date": "2026-07-28",
+      "supplier": "Clarke-Ross",
+      "customer": "Walter-Berry",
+      "total_amount": "15689.20",
+      "vat_amount": "2829.20",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_07_en.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "en",
+    "fields": {
+      "invoice_number": "INV-2026-557",
+      "issue_date": "2026-02-02",
+      "supplier": "Brown-Wallace",
+      "customer": "Galvan LLC",
+      "total_amount": "14139.80",
+      "vat_amount": "2549.80",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "invoice_08_en.pdf",
+    "collection": "finance",
+    "doctype": "invoice",
+    "language": "en",
+    "fields": {
+      "invoice_number": "INV-2026-588",
+      "issue_date": "2026-04-04",
+      "supplier": "Mcbride PLC",
+      "customer": "Eaton Ltd",
+      "total_amount": "1110.20",
+      "vat_amount": "200.20",
+      "currency": "EUR"
+    }
+  },
+  {
+    "filename": "contract_01_it.docx",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "it",
+    "fields": {
+      "parties": [
+        "Benedetti-Sgarbi Group",
+        "Fabbri, Cignaroli e Piazzi e figli"
+      ],
+      "effective_date": "2026-04-25",
+      "end_date": "2027-04-20",
+      "value": "72500.00"
+    }
+  },
+  {
+    "filename": "contract_02_en.pdf",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "en",
+    "fields": {
+      "parties": [
+        "Smith, Lara and Miller",
+        "Sampson, Watkins and Carroll"
+      ],
+      "effective_date": "2026-05-31",
+      "end_date": "2027-05-26",
+      "value": "58000.00"
+    }
+  },
+  {
+    "filename": "contract_03_it.docx",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "it",
+    "fields": {
+      "parties": [
+        "Abatantuono, Tartini e Missoni SPA",
+        "Malacarne-Abbagnale SPA"
+      ],
+      "effective_date": "2026-07-06",
+      "end_date": "2027-07-01",
+      "value": "76000.00"
+    }
+  },
+  {
+    "filename": "contract_04_en.pdf",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "en",
+    "fields": {
+      "parties": [
+        "Marquez PLC",
+        "Walker, Parker and Ross"
+      ],
+      "effective_date": "2026-01-29",
+      "end_date": "2027-07-23",
+      "value": "48000.00"
+    }
+  },
+  {
+    "filename": "contract_05_it.docx",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "it",
+    "fields": {
+      "parties": [
+        "Agostini, Foa e Paganini SPA",
+        "Trobbiani, Costalonga e Rubbia e figli"
+      ],
+      "effective_date": "2026-05-15",
+      "end_date": "2027-05-10",
+      "value": "89000.00"
+    }
+  },
+  {
+    "filename": "contract_06_en.pdf",
+    "collection": "contracts",
+    "doctype": "contract",
+    "language": "en",
+    "fields": {
+      "parties": [
+        "Smith-Tucker",
+        "Wong-Davis"
+      ],
+      "effective_date": "2026-04-26",
+      "end_date": "2027-04-21",
+      "value": "21500.00"
+    }
+  },
+  {
+    "filename": "hr_leave_it.pdf",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "it",
+    "fields": {
+      "policy_title": "Politica ferie e permessi",
+      "effective_date": "2026-01-01",
+      "applies_to": "tutti i dipendenti"
+    }
+  },
+  {
+    "filename": "hr_remote_en.docx",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "en",
+    "fields": {
+      "policy_title": "Remote Work Policy",
+      "effective_date": "2026-01-31",
+      "applies_to": "all employees"
+    }
+  },
+  {
+    "filename": "hr_expenses_it.pdf",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "it",
+    "fields": {
+      "policy_title": "Politica rimborsi spese",
+      "effective_date": "2026-03-02",
+      "applies_to": "tutti i dipendenti"
+    }
+  },
+  {
+    "filename": "hr_onboarding_en.docx",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "en",
+    "fields": {
+      "policy_title": "New Hire Onboarding Policy",
+      "effective_date": "2026-04-01",
+      "applies_to": "all employees"
+    }
+  },
+  {
+    "filename": "hr_conduct_it.pdf",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "it",
+    "fields": {
+      "policy_title": "Codice di condotta",
+      "effective_date": "2026-05-01",
+      "applies_to": "tutti i dipendenti"
+    }
+  },
+  {
+    "filename": "hr_training_en.docx",
+    "collection": "hr",
+    "doctype": "hr_policy",
+    "language": "en",
+    "fields": {
+      "policy_title": "Training Policy",
+      "effective_date": "2026-05-31",
+      "applies_to": "all employees"
+    }
+  },
+  {
+    "filename": "minutes_01_it.txt",
+    "collection": "meetings",
+    "doctype": "meeting_minutes",
+    "language": "it",
+    "fields": {
+      "date": "2026-02-08",
+      "attendees": [
+        "Caterina Mazzanti-Brambilla",
+        "Livio Cimini-Rubbia",
+        "Giancarlo Falier-Verga",
+        "Eva Franzese-Toscanini"
+      ],
+      "decisions": [
+        "Il rilascio è rimandato alla settimana successiva.",
+        "Si adotta PostgreSQL come database principale."
+      ],
+      "action_items": [
+        {
+          "owner": "Caterina Mazzanti-Brambilla",
+          "task": "preparare il report mensile",
+          "due": "2026-02-16"
+        },
+        {
+          "owner": "Livio Cimini-Rubbia",
+          "task": "aggiornare il piano di test",
+          "due": "2026-02-24"
+        }
+      ]
+    }
+  },
+  {
+    "filename": "minutes_02_en.docx",
+    "collection": "meetings",
+    "doctype": "meeting_minutes",
+    "language": "en",
+    "fields": {
+      "date": "2026-02-25",
+      "attendees": [
+        "Jeremy Bell",
+        "Douglas Rhodes",
+        "Karen Avery",
+        "Lindsey Wood"
+      ],
+      "decisions": [
+        "Sprint meetings will be held on Monday mornings.",
+        "The customer will receive a demo before the end of the month."
+      ],
+      "action_items": [
+        {
+          "owner": "Jeremy Bell",
+          "task": "contact the sensor supplier",
+          "due": "2026-03-07"
+        },
+        {
+          "owner": "Douglas Rhodes",
+          "task": "review the budget",
+          "due": "2026-03-12"
+        }
+      ]
+    }
+  },
+  {
+    "filename": "minutes_03_it.txt",
+    "collection": "meetings",
+    "doctype": "meeting_minutes",
+    "language": "it",
+    "fields": {
+      "date": "2026-03-16",
+      "attendees": [
+        "Pasqual Agazzi",
+        "Orlando Santi",
+        "Dott. Adelasia Cutrufo",
+        "Dott. Massimo Ricciardi"
+      ],
+      "decisions": [
+        "Si rimanda l'acquisto di nuovi sensori al prossimo trimestre.",
+        "Il monitoraggio degli allarmi passa a un turno di reperibilità."
+      ],
+      "action_items": [
+        {
+          "owner": "Pasqual Agazzi",
+          "task": "configurare il server di staging",
+          "due": "2026-03-26"
+        },
+        {
+          "owner": "Orlando Santi",
+          "task": "organizzare la demo per il cliente",
+          "due": "2026-03-30"
+        }
+      ]
+    }
+  },
+  {
+    "filename": "minutes_04_en.docx",
+    "collection": "meetings",
+    "doctype": "meeting_minutes",
+    "language": "en",
+    "fields": {
+      "date": "2026-04-08",
+      "attendees": [
+        "Monica Lambert",
+        "Stephanie Meadows",
+        "Timothy Brown",
+        "Joseph Stout"
+      ],
+      "decisions": [
+        "Documentation will be written in English.",
+        "The budget for the second half is approved."
+      ],
+      "action_items": [
+        {
+          "owner": "Monica Lambert",
+          "task": "write the API documentation",
+          "due": "2026-04-18"
+        },
+        {
+          "owner": "Stephanie Meadows",
+          "task": "migrate the database",
+          "due": "2026-04-23"
+        }
+      ]
+    }
+  },
+  {
+    "filename": "techreport_01_en.pdf",
+    "collection": "technical",
+    "doctype": "technical_report",
+    "language": "en",
+    "fields": {
+      "site": "Mondovì",
+      "sensor_count": 48,
+      "sampling_interval_s": 15,
+      "alert_threshold_c": 85,
+      "period_months": 3
+    }
+  },
+  {
+    "filename": "techreport_02_it.pdf",
+    "collection": "technical",
+    "doctype": "technical_report",
+    "language": "it",
+    "fields": {
+      "site": "Biella",
+      "sensor_count": 64,
+      "sampling_interval_s": 30,
+      "alert_threshold_c": 70,
+      "period_months": 6
+    }
+  },
+  {
+    "filename": "techreport_03_en.pdf",
+    "collection": "technical",
+    "doctype": "technical_report",
+    "language": "en",
+    "fields": {
+      "site": "Novara",
+      "sensor_count": 36,
+      "sampling_interval_s": 10,
+      "alert_threshold_c": 90,
+      "period_months": 4
+    }
+  },
+  {
+    "filename": "techreport_04_it.pdf",
+    "collection": "technical",
+    "doctype": "technical_report",
+    "language": "it",
+    "fields": {
+      "site": "Savona",
+      "sensor_count": 120,
+      "sampling_interval_s": 60,
+      "alert_threshold_c": 65,
+      "period_months": 2
+    }
+  }
+]
