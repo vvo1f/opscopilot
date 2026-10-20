@@ -12,6 +12,8 @@ dependencies = [
   "pgvector",
   "openai>=1.30",
   "python-multipart",
+  "pypdf",
+  "python-docx",
 ]
 
 [project.optional-dependencies]
@@ -19,7 +21,7 @@ dependencies = [
 ml = ["sentence-transformers"]
 dev = ["pytest", "httpx", "ruff"]
 # synthetic data generator (phase 1)
-data = ["faker", "reportlab", "python-docx"]
+data = ["faker", "reportlab"]
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -33,3 +35,4 @@ line-length = 100
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["integration: needs the Postgres container (skipped when it is down)"]

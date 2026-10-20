@@ -4,12 +4,29 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    # a real Postgres with pgvector, so the integration tests run in CI too
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: opscopilot
+          POSTGRES_PASSWORD: opscopilot
+          POSTGRES_DB: opscopilot
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U opscopilot"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://opscopilot:opscopilot@localhost:5432/opscopilot
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      # no "ml" extra here: unit tests never load the embedding model
+      # no "ml" extra: the tests use a fake embedder and never load the real model
       - run: pip install -e ".[dev,data]"
       - run: ruff check .
       - run: pytest

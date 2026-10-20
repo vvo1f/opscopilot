@@ -11,9 +11,14 @@ Requires-Dist: psycopg[binary]>=3.1
 Requires-Dist: pgvector
 Requires-Dist: openai>=1.30
 Requires-Dist: python-multipart
+Requires-Dist: pypdf
+Requires-Dist: python-docx
 Provides-Extra: ml
 Requires-Dist: sentence-transformers; extra == "ml"
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: httpx; extra == "dev"
 Requires-Dist: ruff; extra == "dev"
+Provides-Extra: data
+Requires-Dist: faker; extra == "data"
+Requires-Dist: reportlab; extra == "data"

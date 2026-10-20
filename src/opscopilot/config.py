@@ -28,6 +28,13 @@ class Settings(BaseSettings):
     embedding_model: str = "intfloat/multilingual-e5-small"
     embedding_dim: int = 384
 
+    # Chunking. The sample documents are only 250-550 characters long, so the chunks
+    # are small on purpose: at 600 every document would be a single chunk and
+    # retrieval would just be picking a whole document.
+    chunk_size: int = 300       # max characters per chunk
+    chunk_overlap: int = 60     # characters repeated at the start of the next chunk
+    max_upload_mb: int = 10
+
     database_url: str = "postgresql://opscopilot:opscopilot@localhost:5434/opscopilot"
     geo_database_url: str = "postgresql://geo_admin:geo_admin@localhost:5433/geo"
 

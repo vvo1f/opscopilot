@@ -1,13 +1,34 @@
 import logging
+import re
+import tempfile
+from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Annotated
 
 import psycopg
-from fastapi import FastAPI
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 
+from opscopilot import store
 from opscopilot.config import settings
+from opscopilot.ingestion.parsers import SUPPORTED, EmptyDocument, UnsupportedFileType
+from opscopilot.ingestion.pipeline import ingest_file
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+log = logging.getLogger(__name__)
 
-app = FastAPI(title="OpsCopilot")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # create the tables on startup; if the database is down the API still
+    # starts, and /health will say so
+    try:
+        store.init_schema()
+    except (psycopg.Error, RuntimeError) as exc:
+        log.warning("could not initialise the database schema: %s", exc)
+    yield
+
+
+app = FastAPI(title="OpsCopilot", lifespan=lifespan)
 
 
 def db_ok(url: str) -> bool:
@@ -26,3 +47,46 @@ def health():
         "app_db": db_ok(settings.database_url),
         "geo_db": db_ok(settings.geo_database_url),
     }
+
+
+# These endpoints are plain `def`, not `async def`: parsing and embedding block
+# the CPU, and FastAPI runs sync endpoints in a thread pool so they don't freeze
+# the event loop.
+@app.post("/documents")
+def upload_document(file: Annotated[UploadFile, File()], collection: Annotated[str, Form()]):
+    if not re.fullmatch(r"[a-z0-9_-]{1,32}", collection):
+        raise HTTPException(422, "collection must be 1-32 chars: lowercase letters, digits, - or _")
+    filename = Path(file.filename or "upload").name
+    suffix = Path(filename).suffix.lower()
+    if suffix not in SUPPORTED:
+        raise HTTPException(415, f"unsupported file type '{suffix}'. Use: {sorted(SUPPORTED)}")
+
+    data = file.file.read()
+    if len(data) > settings.max_upload_mb * 1024 * 1024:
+        raise HTTPException(413, f"file larger than {settings.max_upload_mb} MB")
+
+    # the parsers want a real path, so write the upload to a temp folder first
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / filename
+        path.write_bytes(data)
+        try:
+            result = ingest_file(path, collection, filename)
+        except (UnsupportedFileType, EmptyDocument) as exc:
+            raise HTTPException(422, str(exc)) from exc
+    return {"document_id": result.document_id, "filename": result.filename,
+            "collection": result.collection, "chunks": result.chunks, "skipped": result.skipped}
+
+
+@app.get("/documents")
+def list_documents():
+    with store.connect() as conn:
+        return store.list_documents(conn)
+
+
+@app.get("/documents/{document_id}")
+def get_document(document_id: int):
+    with store.connect() as conn:
+        doc = store.get_document(conn, document_id)
+    if doc is None:
+        raise HTTPException(404, "document not found")
+    return doc

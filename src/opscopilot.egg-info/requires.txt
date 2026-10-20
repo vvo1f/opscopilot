@@ -6,6 +6,12 @@ psycopg[binary]>=3.1
 pgvector
 openai>=1.30
 python-multipart
+pypdf
+python-docx
+
+[data]
+faker
+reportlab
 
 [dev]
 pytest
