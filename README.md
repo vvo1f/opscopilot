@@ -4,7 +4,7 @@ LLM-based assistant for internal business processes: document ingestion,
 classification and extraction, semantic search with RAG, and (later) email
 triage and natural-language SQL. Runs locally with Ollama, no paid APIs.
 
-Status: phases 0-3 (setup, synthetic data, LLM client, embeddings, ingestion).
+Status: phases 0-5 (setup, data, LLM client, embeddings, ingestion, RAG, classification and extraction).
 
 ## Quickstart
 
@@ -19,7 +19,7 @@ docker compose up -d               # Postgres + pgvector
 
 python scripts/llm_ping.py
 python scripts/generate_data.py        # synthetic documents + ground truth + eval sets
-python scripts/ingest_folder.py        # parse, chunk, embed and store them (needs the ml extra)
+python scripts/ingest_folder.py        # parse, chunk, embed, classify and store them (needs the ml extra + LLM)
 uvicorn opscopilot.main:app --reload   # then open http://localhost:8000/health
 pytest
 ```
@@ -45,6 +45,9 @@ src/opscopilot/
   datagen/         synthetic documents, ground truth, eval sets
   store.py         all SQL (tables, pgvector index, inserts)
   ingestion/       parsers.py, chunker.py, pipeline.py
+  rag/             retriever.py, answer.py
+  docintel/        schemas.py, analyze.py (classification + extraction)
+  prompts/         *.txt, one file per prompt
 scripts/           generate_data.py, llm_ping.py, embed_ping.py
 data/              ground_truth/ and eval_sets/ are committed; documents/ is generated
 tests/             unit tests (no LLM, no database needed)

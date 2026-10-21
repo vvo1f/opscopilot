@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     # a chunk like "Total: 1.234,56 EUR" still carries the invoice number it belongs to.
     chunk_header: bool = True
 
+    # How much of a document is sent to the LLM for classification and extraction
+    analysis_chars: int = 6000
+
     # Retrieval / answering
     top_k: int = 5
     # Chunks whose best cosine similarity is below this are not sent to the LLM.

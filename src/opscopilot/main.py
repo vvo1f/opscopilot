@@ -59,7 +59,8 @@ def health():
 # the CPU, and FastAPI runs sync endpoints in a thread pool so they don't freeze
 # the event loop.
 @app.post("/documents")
-def upload_document(file: Annotated[UploadFile, File()], collection: Annotated[str, Form()]):
+def upload_document(file: Annotated[UploadFile, File()], collection: Annotated[str, Form()],
+                    analyze: Annotated[bool, Form()] = True):
     if not re.fullmatch(r"[a-z0-9_-]{1,32}", collection):
         raise HTTPException(422, "collection must be 1-32 chars: lowercase letters, digits, - or _")
     filename = Path(file.filename or "upload").name
@@ -76,11 +77,12 @@ def upload_document(file: Annotated[UploadFile, File()], collection: Annotated[s
         path = Path(tmp) / filename
         path.write_bytes(data)
         try:
-            result = ingest_file(path, collection, filename)
+            result = ingest_file(path, collection, filename, analyze=analyze)
         except (UnsupportedFileType, EmptyDocument) as exc:
             raise HTTPException(422, str(exc)) from exc
     return {"document_id": result.document_id, "filename": result.filename,
-            "collection": result.collection, "chunks": result.chunks, "skipped": result.skipped}
+            "collection": result.collection, "chunks": result.chunks, "skipped": result.skipped,
+            "label": result.label, "analysis_error": result.analysis_error}
 
 
 @app.get("/documents")

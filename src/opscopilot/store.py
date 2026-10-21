@@ -8,6 +8,7 @@ import logging
 import psycopg
 from pgvector.psycopg import register_vector
 from psycopg.rows import dict_row
+from psycopg.types.json import Jsonb
 
 from opscopilot.config import settings
 
@@ -74,7 +75,8 @@ def reset_schema() -> None:
 
 def find_by_hash(conn: psycopg.Connection, sha256: str) -> dict | None:
     with conn.cursor(row_factory=dict_row) as cur:
-        cur.execute("SELECT id, filename, collection FROM documents WHERE sha256 = %s", (sha256,))
+        cur.execute("SELECT id, filename, collection, label, fields FROM documents WHERE sha256 = %s",
+                    (sha256,))
         return cur.fetchone()
 
 
@@ -91,6 +93,18 @@ def insert_chunks(conn: psycopg.Connection, document_id: int, chunks: list, vect
         cur.executemany(
             "INSERT INTO chunks (document_id, page, chunk_index, content, embedding) "
             "VALUES (%s, %s, %s, %s, %s)", rows)
+
+
+def set_analysis(conn: psycopg.Connection, document_id: int, label: str | None,
+                 fields: dict | None, error: str | None) -> None:
+    """Save the classification and the extracted fields.
+
+    A failure is stored too, as {"error": "..."} in fields, so the API can show it
+    and a later run knows which documents to retry.
+    """
+    payload = {"error": error} if error else (fields or {})
+    conn.execute("UPDATE documents SET label = %s, fields = %s WHERE id = %s",
+                 (label, Jsonb(payload), document_id))
 
 
 def list_documents(conn: psycopg.Connection) -> list[dict]:
