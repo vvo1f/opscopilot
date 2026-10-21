@@ -1,0 +1,190 @@
+{
+  "name": "classification",
+  "date": "2026-10-21",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33"
+  },
+  "metrics": {
+    "documents": 28,
+    "accuracy": 0.143,
+    "misclassified": [
+      {
+        "file": "contract_02_en.pdf",
+        "true": "contract",
+        "predicted": "none"
+      },
+      {
+        "file": "contract_03_it.docx",
+        "true": "contract",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_conduct_it.pdf",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_expenses_it.pdf",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_leave_it.pdf",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_onboarding_en.docx",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_remote_en.docx",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "hr_training_en.docx",
+        "true": "hr_policy",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_01_it.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_02_it.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_03_it.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_04_it.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_05_en.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_06_en.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_07_en.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "invoice_08_en.pdf",
+        "true": "invoice",
+        "predicted": "none"
+      },
+      {
+        "file": "minutes_01_it.txt",
+        "true": "meeting_minutes",
+        "predicted": "none"
+      },
+      {
+        "file": "minutes_02_en.docx",
+        "true": "meeting_minutes",
+        "predicted": "none"
+      },
+      {
+        "file": "minutes_03_it.txt",
+        "true": "meeting_minutes",
+        "predicted": "none"
+      },
+      {
+        "file": "minutes_04_en.docx",
+        "true": "meeting_minutes",
+        "predicted": "none"
+      },
+      {
+        "file": "techreport_01_en.pdf",
+        "true": "technical_report",
+        "predicted": "none"
+      },
+      {
+        "file": "techreport_02_it.pdf",
+        "true": "technical_report",
+        "predicted": "none"
+      },
+      {
+        "file": "techreport_03_en.pdf",
+        "true": "technical_report",
+        "predicted": "none"
+      },
+      {
+        "file": "techreport_04_it.pdf",
+        "true": "technical_report",
+        "predicted": "none"
+      }
+    ]
+  },
+  "table": [
+    {
+      "true \\ predicted": "contract",
+      "contract": 4,
+      "invoice": 0,
+      "hr_policy": 0,
+      "meeting_minutes": 0,
+      "technical_report": 0,
+      "other": 0,
+      "none": 2
+    },
+    {
+      "true \\ predicted": "invoice",
+      "contract": 0,
+      "invoice": 0,
+      "hr_policy": 0,
+      "meeting_minutes": 0,
+      "technical_report": 0,
+      "other": 0,
+      "none": 8
+    },
+    {
+      "true \\ predicted": "hr_policy",
+      "contract": 0,
+      "invoice": 0,
+      "hr_policy": 0,
+      "meeting_minutes": 0,
+      "technical_report": 0,
+      "other": 0,
+      "none": 6
+    },
+    {
+      "true \\ predicted": "meeting_minutes",
+      "contract": 0,
+      "invoice": 0,
+      "hr_policy": 0,
+      "meeting_minutes": 0,
+      "technical_report": 0,
+      "other": 0,
+      "none": 4
+    },
+    {
+      "true \\ predicted": "technical_report",
+      "contract": 0,
+      "invoice": 0,
+      "hr_policy": 0,
+      "meeting_minutes": 0,
+      "technical_report": 0,
+      "other": 0,
+      "none": 4
+    }
+  ],
+  "rows": []
+}

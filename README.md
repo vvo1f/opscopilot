@@ -4,7 +4,7 @@ LLM-based assistant for internal business processes: document ingestion,
 classification and extraction, semantic search with RAG, and (later) email
 triage and natural-language SQL. Runs locally with Ollama, no paid APIs.
 
-Status: phases 0-5 (setup, data, LLM client, embeddings, ingestion, RAG, classification and extraction).
+Status: phases 0-6 (setup, data, LLM client, embeddings, ingestion, RAG, classification and extraction, evaluation).
 
 ## Quickstart
 
@@ -48,7 +48,23 @@ src/opscopilot/
   rag/             retriever.py, answer.py
   docintel/        schemas.py, analyze.py (classification + extraction)
   prompts/         *.txt, one file per prompt
+eval/              run_eval.py (all metrics), cache_llm.py (answers cached on disk)
 scripts/           generate_data.py, llm_ping.py, embed_ping.py
 data/              ground_truth/ and eval_sets/ are committed; documents/ is generated
 tests/             unit tests (no LLM, no database needed)
 ```
+
+## Evaluation
+
+```bash
+python eval/run_eval.py retrieval        # hit@k and MRR, no LLM
+python eval/run_eval.py chunks           # chunk size x header sweep, no LLM
+python eval/run_eval.py answers          # RAG answers, 30 LLM calls (cached in eval/cache)
+python eval/run_eval.py answers --prompt rag_plain
+python eval/run_eval.py classification   # reads what ingestion stored
+python eval/run_eval.py extraction
+python eval/run_eval.py report           # writes eval/results/summary.md
+```
+
+The datasets are small and synthetic (28 documents, 30 questions), so scores are
+optimistic and differences of a few points are noise.

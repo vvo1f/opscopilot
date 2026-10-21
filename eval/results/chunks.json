@@ -1,0 +1,78 @@
+{
+  "name": "chunks",
+  "date": "2026-10-21",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33",
+    "note": "overlap = chunk_size / 5"
+  },
+  "metrics": {
+    "questions": 24
+  },
+  "table": [
+    {
+      "chunk_size": 150,
+      "overlap": 30,
+      "header": true,
+      "chunks": 116,
+      "hit@1": 0.875,
+      "hit@3": 0.875,
+      "hit@5": 0.917,
+      "mrr": 0.883
+    },
+    {
+      "chunk_size": 150,
+      "overlap": 30,
+      "header": false,
+      "chunks": 116,
+      "hit@1": 0.792,
+      "hit@3": 0.875,
+      "hit@5": 0.875,
+      "mrr": 0.843
+    },
+    {
+      "chunk_size": 300,
+      "overlap": 60,
+      "header": true,
+      "chunks": 54,
+      "hit@1": 0.75,
+      "hit@3": 0.875,
+      "hit@5": 0.875,
+      "mrr": 0.826
+    },
+    {
+      "chunk_size": 300,
+      "overlap": 60,
+      "header": false,
+      "chunks": 54,
+      "hit@1": 0.792,
+      "hit@3": 0.917,
+      "hit@5": 0.917,
+      "mrr": 0.852
+    },
+    {
+      "chunk_size": 600,
+      "overlap": 120,
+      "header": true,
+      "chunks": 28,
+      "hit@1": 0.917,
+      "hit@3": 0.917,
+      "hit@5": 1.0,
+      "mrr": 0.933
+    },
+    {
+      "chunk_size": 600,
+      "overlap": 120,
+      "header": false,
+      "chunks": 28,
+      "hit@1": 0.917,
+      "hit@3": 0.917,
+      "hit@5": 1.0,
+      "mrr": 0.933
+    }
+  ],
+  "rows": []
+}

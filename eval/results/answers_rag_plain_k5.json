@@ -1,0 +1,184 @@
+{
+  "name": "answers_rag_plain_k5",
+  "date": "2026-10-21",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33",
+    "k": 5,
+    "prompt": "rag_plain",
+    "scoped": false
+  },
+  "metrics": {
+    "answerable_questions": 0,
+    "answer_correct": null,
+    "answer_correct_same_language": null,
+    "answer_correct_cross_language": null,
+    "right_document_retrieved": null,
+    "wrongly_abstained": null,
+    "citation_present": null,
+    "citation_right_document": null,
+    "unanswerable_questions": 0,
+    "abstained_on_unanswerable": null,
+    "failed_calls": 30,
+    "llm_cache": {
+      "hits": 0,
+      "new_calls": 0
+    }
+  },
+  "table": [],
+  "rows": [
+    {
+      "id": "q01",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q02",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q03",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q04",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q05",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q06",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q07",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q08",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q09",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q10",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q11",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q12",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q13",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q14",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q15",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q16",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q17",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q18",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q19",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q20",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q21",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q22",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q23",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q24",
+      "answerable": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q25",
+      "answerable": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q26",
+      "answerable": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q27",
+      "answerable": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q28",
+      "answerable": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q29",
+      "answerable": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "q30",
+      "answerable": false,
+      "error": "404 page not found"
+    }
+  ]
+}

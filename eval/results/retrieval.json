@@ -1,0 +1,254 @@
+{
+  "name": "retrieval",
+  "date": "2026-10-21",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33"
+  },
+  "metrics": {
+    "all": {
+      "hit@1": 0.75,
+      "hit@3": 0.875,
+      "hit@5": 0.875,
+      "mrr": 0.826,
+      "n": 24
+    },
+    "question_in_same_language_as_document": {
+      "hit@1": 0.857,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.929,
+      "n": 14
+    },
+    "question_in_other_language": {
+      "hit@1": 0.6,
+      "hit@3": 0.7,
+      "hit@5": 0.7,
+      "mrr": 0.683,
+      "n": 10
+    },
+    "chunks_in_index": 54,
+    "similarity_threshold": {
+      "threshold": 0.8313,
+      "balanced_accuracy": 0.938,
+      "kept": 0.875,
+      "rejected": 1.0
+    }
+  },
+  "table": [],
+  "rows": [
+    {
+      "id": "q01",
+      "question": "Quanti giorni di ferie retribuite spettano a un dipendente a tempo pieno all'anno?",
+      "expected": "hr_leave_it.pdf",
+      "rank": 1,
+      "best_score": 0.916
+    },
+    {
+      "id": "q02",
+      "question": "How many unused vacation days can be carried over to the next year?",
+      "expected": "hr_leave_it.pdf",
+      "rank": 1,
+      "best_score": 0.791
+    },
+    {
+      "id": "q03",
+      "question": "Quanti giorni a settimana è consentito il lavoro da remoto?",
+      "expected": "hr_remote_en.docx",
+      "rank": 2,
+      "best_score": 0.838
+    },
+    {
+      "id": "q04",
+      "question": "What is the monthly allowance for remote work connectivity costs?",
+      "expected": "hr_remote_en.docx",
+      "rank": 1,
+      "best_score": 0.874
+    },
+    {
+      "id": "q05",
+      "question": "Qual è il rimborso massimo per una notte in hotel durante una trasferta?",
+      "expected": "hr_expenses_it.pdf",
+      "rank": 1,
+      "best_score": 0.906
+    },
+    {
+      "id": "q06",
+      "question": "Within how many days must expense reports be submitted after a trip?",
+      "expected": "hr_expenses_it.pdf",
+      "rank": 1,
+      "best_score": 0.807
+    },
+    {
+      "id": "q07",
+      "question": "Quanto dura il periodo di prova dei nuovi assunti?",
+      "expected": "hr_onboarding_en.docx",
+      "rank": 6,
+      "best_score": 0.816
+    },
+    {
+      "id": "q08",
+      "question": "For how many days is a new hire assigned a mentor?",
+      "expected": "hr_onboarding_en.docx",
+      "rank": 1,
+      "best_score": 0.855
+    },
+    {
+      "id": "q09",
+      "question": "Qual è l'importo totale della fattura INV-2026-313?",
+      "expected": "invoice_01_it.pdf",
+      "rank": 1,
+      "best_score": 0.883
+    },
+    {
+      "id": "q10",
+      "question": "What is the total amount of invoice INV-2026-398?",
+      "expected": "invoice_03_it.pdf",
+      "rank": 6,
+      "best_score": 0.859
+    },
+    {
+      "id": "q11",
+      "question": "Qual è l'importo totale della fattura INV-2026-477?",
+      "expected": "invoice_05_en.pdf",
+      "rank": null,
+      "best_score": 0.865
+    },
+    {
+      "id": "q12",
+      "question": "What is the total amount of invoice INV-2026-557?",
+      "expected": "invoice_07_en.pdf",
+      "rank": 2,
+      "best_score": 0.871
+    },
+    {
+      "id": "q13",
+      "question": "Qual è la data di scadenza del contratto tra Benedetti-Sgarbi Group e Fabbri, Cignaroli e Piazzi e figli?",
+      "expected": "contract_01_it.docx",
+      "rank": 1,
+      "best_score": 0.901
+    },
+    {
+      "id": "q14",
+      "question": "What is the end date of the agreement between Smith, Lara and Miller and Sampson, Watkins and Carroll?",
+      "expected": "contract_02_en.pdf",
+      "rank": 1,
+      "best_score": 0.893
+    },
+    {
+      "id": "q15",
+      "question": "Qual è la data di scadenza del contratto tra Abatantuono, Tartini e Missoni SPA e Malacarne-Abbagnale SPA?",
+      "expected": "contract_03_it.docx",
+      "rank": 1,
+      "best_score": 0.918
+    },
+    {
+      "id": "q16",
+      "question": "What is the end date of the agreement between Marquez PLC and Walker, Parker and Ross?",
+      "expected": "contract_04_en.pdf",
+      "rank": 1,
+      "best_score": 0.9
+    },
+    {
+      "id": "q17",
+      "question": "Chi è responsabile di questa azione: preparare il report mensile?",
+      "expected": "minutes_01_it.txt",
+      "rank": 2,
+      "best_score": 0.831
+    },
+    {
+      "id": "q18",
+      "question": "Who is responsible for this action: contact the sensor supplier?",
+      "expected": "minutes_02_en.docx",
+      "rank": 1,
+      "best_score": 0.848
+    },
+    {
+      "id": "q19",
+      "question": "Chi è responsabile di questa azione: configurare il server di staging?",
+      "expected": "minutes_03_it.txt",
+      "rank": 1,
+      "best_score": 0.859
+    },
+    {
+      "id": "q20",
+      "question": "Who is responsible for this action: write the API documentation?",
+      "expected": "minutes_04_en.docx",
+      "rank": 1,
+      "best_score": 0.861
+    },
+    {
+      "id": "q21",
+      "question": "Quanti sensori di temperatura sono installati presso il sito di Mondovì?",
+      "expected": "techreport_01_en.pdf",
+      "rank": 1,
+      "best_score": 0.891
+    },
+    {
+      "id": "q22",
+      "question": "How many temperature sensors are installed at the Biella site?",
+      "expected": "techreport_02_it.pdf",
+      "rank": 1,
+      "best_score": 0.899
+    },
+    {
+      "id": "q23",
+      "question": "Quanti sensori di temperatura sono installati presso il sito di Novara?",
+      "expected": "techreport_03_en.pdf",
+      "rank": 1,
+      "best_score": 0.878
+    },
+    {
+      "id": "q24",
+      "question": "How many temperature sensors are installed at the Savona site?",
+      "expected": "techreport_04_it.pdf",
+      "rank": 1,
+      "best_score": 0.901
+    },
+    {
+      "id": "q25",
+      "question": "Qual è la politica aziendale sui cani in ufficio?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.787
+    },
+    {
+      "id": "q26",
+      "question": "Who is the CEO of Alpina Systems?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.826
+    },
+    {
+      "id": "q27",
+      "question": "Esiste un piano di stock option per i dipendenti?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.814
+    },
+    {
+      "id": "q28",
+      "question": "Which insurer provides the supplementary health insurance?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.771
+    },
+    {
+      "id": "q29",
+      "question": "Qual è la password del Wi-Fi degli ospiti?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.788
+    },
+    {
+      "id": "q30",
+      "question": "What is the company car policy?",
+      "expected": null,
+      "rank": null,
+      "best_score": 0.796
+    }
+  ]
+}

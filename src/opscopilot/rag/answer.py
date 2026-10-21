@@ -60,7 +60,7 @@ def build_user_message(question: str, sources: list[Source]) -> str:
 
 
 def ask(question: str, llm: LLMClient, collection: str | None = None,
-        k: int | None = None, search_fn=search) -> Answer:
+        k: int | None = None, search_fn=search, prompt_name: str | None = None) -> Answer:
     lang = guess_language(question)
     sources = search_fn(question, k=k, collection=collection)
 
@@ -69,7 +69,8 @@ def ask(question: str, llm: LLMClient, collection: str | None = None,
         return Answer(NOT_FOUND_MESSAGE[lang], False, [], sources)
 
     # asking the HR collection switches to the HR assistant persona
-    system = load_prompt("hr_answer" if collection == HR_COLLECTION else "rag_answer")
+    # prompt_name lets the evaluation compare prompt variants; normal use leaves it empty
+    system = load_prompt(prompt_name or ("hr_answer" if collection == HR_COLLECTION else "rag_answer"))
     reply = llm.chat(
         [{"role": "system", "content": system},
          {"role": "user", "content": build_user_message(question, sources)}],

@@ -21,7 +21,8 @@ def fmt_date(d: date, lang: str) -> str:
 
 def date_variants(d: date) -> list[str]:
     """Every way a correct answer might spell this date."""
-    return [d.isoformat(), fmt_date(d, "it"), fmt_date(d, "en")]
+    return [d.isoformat(), fmt_date(d, "it"), fmt_date(d, "en"),
+            f"{d.day} {EN_MONTHS[d.month - 1]} {d.year}"]
 
 
 def _number(amount: Decimal, lang: str) -> str:

@@ -1,0 +1,620 @@
+{
+  "name": "extraction",
+  "date": "2026-10-21",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33"
+  },
+  "metrics": {
+    "field_accuracy": 0.163,
+    "per_type": {
+      "contract": 0.667,
+      "hr_policy": 0.0,
+      "invoice": 0.0
+    },
+    "documents_with_failed_analysis": 16
+  },
+  "table": [
+    {
+      "type": "contract",
+      "field": "effective_date",
+      "correct": 4,
+      "total": 6,
+      "accuracy": 0.667
+    },
+    {
+      "type": "contract",
+      "field": "end_date",
+      "correct": 4,
+      "total": 6,
+      "accuracy": 0.667
+    },
+    {
+      "type": "contract",
+      "field": "parties",
+      "correct": 4,
+      "total": 6,
+      "accuracy": 0.667
+    },
+    {
+      "type": "contract",
+      "field": "value",
+      "correct": 4,
+      "total": 6,
+      "accuracy": 0.667
+    },
+    {
+      "type": "hr_policy",
+      "field": "applies_to",
+      "correct": 0,
+      "total": 6,
+      "accuracy": 0.0
+    },
+    {
+      "type": "hr_policy",
+      "field": "effective_date",
+      "correct": 0,
+      "total": 6,
+      "accuracy": 0.0
+    },
+    {
+      "type": "hr_policy",
+      "field": "policy_title",
+      "correct": 0,
+      "total": 6,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "currency",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "customer",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "invoice_number",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "issue_date",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "supplier",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "total_amount",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    },
+    {
+      "type": "invoice",
+      "field": "vat_amount",
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0
+    }
+  ],
+  "rows": [
+    {
+      "file": "contract_02_en.pdf",
+      "field": "parties",
+      "expected": [
+        "Smith, Lara and Miller",
+        "Sampson, Watkins and Carroll"
+      ],
+      "predicted": null
+    },
+    {
+      "file": "contract_02_en.pdf",
+      "field": "effective_date",
+      "expected": "2026-05-31",
+      "predicted": null
+    },
+    {
+      "file": "contract_02_en.pdf",
+      "field": "end_date",
+      "expected": "2027-05-26",
+      "predicted": null
+    },
+    {
+      "file": "contract_02_en.pdf",
+      "field": "value",
+      "expected": "58000.00",
+      "predicted": null
+    },
+    {
+      "file": "contract_03_it.docx",
+      "field": "parties",
+      "expected": [
+        "Abatantuono, Tartini e Missoni SPA",
+        "Malacarne-Abbagnale SPA"
+      ],
+      "predicted": null
+    },
+    {
+      "file": "contract_03_it.docx",
+      "field": "effective_date",
+      "expected": "2026-07-06",
+      "predicted": null
+    },
+    {
+      "file": "contract_03_it.docx",
+      "field": "end_date",
+      "expected": "2027-07-01",
+      "predicted": null
+    },
+    {
+      "file": "contract_03_it.docx",
+      "field": "value",
+      "expected": "76000.00",
+      "predicted": null
+    },
+    {
+      "file": "hr_conduct_it.pdf",
+      "field": "policy_title",
+      "expected": "Codice di condotta",
+      "predicted": null
+    },
+    {
+      "file": "hr_conduct_it.pdf",
+      "field": "effective_date",
+      "expected": "2026-05-01",
+      "predicted": null
+    },
+    {
+      "file": "hr_conduct_it.pdf",
+      "field": "applies_to",
+      "expected": "tutti i dipendenti",
+      "predicted": null
+    },
+    {
+      "file": "hr_expenses_it.pdf",
+      "field": "policy_title",
+      "expected": "Politica rimborsi spese",
+      "predicted": null
+    },
+    {
+      "file": "hr_expenses_it.pdf",
+      "field": "effective_date",
+      "expected": "2026-03-02",
+      "predicted": null
+    },
+    {
+      "file": "hr_expenses_it.pdf",
+      "field": "applies_to",
+      "expected": "tutti i dipendenti",
+      "predicted": null
+    },
+    {
+      "file": "hr_leave_it.pdf",
+      "field": "policy_title",
+      "expected": "Politica ferie e permessi",
+      "predicted": null
+    },
+    {
+      "file": "hr_leave_it.pdf",
+      "field": "effective_date",
+      "expected": "2026-01-01",
+      "predicted": null
+    },
+    {
+      "file": "hr_leave_it.pdf",
+      "field": "applies_to",
+      "expected": "tutti i dipendenti",
+      "predicted": null
+    },
+    {
+      "file": "hr_onboarding_en.docx",
+      "field": "policy_title",
+      "expected": "New Hire Onboarding Policy",
+      "predicted": null
+    },
+    {
+      "file": "hr_onboarding_en.docx",
+      "field": "effective_date",
+      "expected": "2026-04-01",
+      "predicted": null
+    },
+    {
+      "file": "hr_onboarding_en.docx",
+      "field": "applies_to",
+      "expected": "all employees",
+      "predicted": null
+    },
+    {
+      "file": "hr_remote_en.docx",
+      "field": "policy_title",
+      "expected": "Remote Work Policy",
+      "predicted": null
+    },
+    {
+      "file": "hr_remote_en.docx",
+      "field": "effective_date",
+      "expected": "2026-01-31",
+      "predicted": null
+    },
+    {
+      "file": "hr_remote_en.docx",
+      "field": "applies_to",
+      "expected": "all employees",
+      "predicted": null
+    },
+    {
+      "file": "hr_training_en.docx",
+      "field": "policy_title",
+      "expected": "Training Policy",
+      "predicted": null
+    },
+    {
+      "file": "hr_training_en.docx",
+      "field": "effective_date",
+      "expected": "2026-05-31",
+      "predicted": null
+    },
+    {
+      "file": "hr_training_en.docx",
+      "field": "applies_to",
+      "expected": "all employees",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-313",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "issue_date",
+      "expected": "2026-02-24",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "supplier",
+      "expected": "Calbo-Pertile Group",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "customer",
+      "expected": "Scialpi e figli",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "total_amount",
+      "expected": "21850.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "vat_amount",
+      "expected": "3940.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_01_it.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-342",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "issue_date",
+      "expected": "2026-04-16",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "supplier",
+      "expected": "Ficino SPA",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "customer",
+      "expected": "Paolucci, Curci e Pisano Group",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "total_amount",
+      "expected": "19922.60",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "vat_amount",
+      "expected": "3592.60",
+      "predicted": null
+    },
+    {
+      "file": "invoice_02_it.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-398",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "issue_date",
+      "expected": "2026-08-08",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "supplier",
+      "expected": "Pulci, Galvani e Colletti e figli",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "customer",
+      "expected": "Sorrentino-Cendron SPA",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "total_amount",
+      "expected": "5483.90",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "vat_amount",
+      "expected": "988.90",
+      "predicted": null
+    },
+    {
+      "file": "invoice_03_it.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-438",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "issue_date",
+      "expected": "2026-07-08",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "supplier",
+      "expected": "Zaccardo-Omma e figli",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "customer",
+      "expected": "Scaramucci, Sabbatini e Vattimo s.r.l.",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "total_amount",
+      "expected": "16616.40",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "vat_amount",
+      "expected": "2996.40",
+      "predicted": null
+    },
+    {
+      "file": "invoice_04_it.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-477",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "issue_date",
+      "expected": "2026-02-28",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "supplier",
+      "expected": "Rodriguez-Higgins",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "customer",
+      "expected": "Steele, Hicks and Lopez",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "total_amount",
+      "expected": "4239.50",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "vat_amount",
+      "expected": "764.50",
+      "predicted": null
+    },
+    {
+      "file": "invoice_05_en.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-520",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "issue_date",
+      "expected": "2026-07-28",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "supplier",
+      "expected": "Clarke-Ross",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "customer",
+      "expected": "Walter-Berry",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "total_amount",
+      "expected": "15689.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "vat_amount",
+      "expected": "2829.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_06_en.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-557",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "issue_date",
+      "expected": "2026-02-02",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "supplier",
+      "expected": "Brown-Wallace",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "customer",
+      "expected": "Galvan LLC",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "total_amount",
+      "expected": "14139.80",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "vat_amount",
+      "expected": "2549.80",
+      "predicted": null
+    },
+    {
+      "file": "invoice_07_en.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "invoice_number",
+      "expected": "INV-2026-588",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "issue_date",
+      "expected": "2026-04-04",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "supplier",
+      "expected": "Mcbride PLC",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "customer",
+      "expected": "Eaton Ltd",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "total_amount",
+      "expected": "1110.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "vat_amount",
+      "expected": "200.20",
+      "predicted": null
+    },
+    {
+      "file": "invoice_08_en.pdf",
+      "field": "currency",
+      "expected": "EUR",
+      "predicted": null
+    }
+  ]
+}
