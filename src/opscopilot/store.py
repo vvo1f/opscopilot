@@ -109,3 +109,29 @@ def get_document(conn: psycopg.Connection, document_id: int) -> dict | None:
             "count(c.id) AS chunks FROM documents d LEFT JOIN chunks c ON c.document_id = d.id "
             "WHERE d.id = %s GROUP BY d.id", (document_id,))
         return cur.fetchone()
+
+
+def search_chunks(conn: psycopg.Connection, query_vec, k: int, collection: str | None) -> list[dict]:
+    """The k chunks closest to query_vec, optionally inside one collection.
+
+    <=> is pgvector's cosine distance (0 = same direction, 2 = opposite), so
+    1 - distance is the cosine similarity. Ordering by the raw distance is what
+    lets Postgres use the HNSW index.
+    """
+    # With an HNSW index a WHERE filter is applied after the index scan, so a
+    # selective filter can leave fewer than k rows. A wider search (ef_search)
+    # makes that less likely. SET LOCAL only lasts for this transaction.
+    conn.execute("SET LOCAL hnsw.ef_search = 100")
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            """
+            SELECT c.id AS chunk_id, c.document_id, d.filename, d.collection,
+                   c.page, c.chunk_index, c.content,
+                   1 - (c.embedding <=> %(q)s) AS score
+            FROM chunks c JOIN documents d ON d.id = c.document_id
+            WHERE %(collection)s::text IS NULL OR d.collection = %(collection)s
+            ORDER BY c.embedding <=> %(q)s
+            LIMIT %(k)s
+            """,
+            {"q": query_vec, "collection": collection, "k": k})
+        return cur.fetchall()

@@ -33,6 +33,17 @@ class Settings(BaseSettings):
     # retrieval would just be picking a whole document.
     chunk_size: int = 300       # max characters per chunk
     chunk_overlap: int = 60     # characters repeated at the start of the next chunk
+    # Contextual header: the document's first lines are put in front of every chunk, so
+    # a chunk like "Total: 1.234,56 EUR" still carries the invoice number it belongs to.
+    chunk_header: bool = True
+
+    # Retrieval / answering
+    top_k: int = 5
+    # Chunks whose best cosine similarity is below this are not sent to the LLM.
+    # 0 = off. E5 models give similar scores to almost everything (roughly 0.7-0.9),
+    # so the right value has to be calibrated on the eval set in phase 6, not guessed.
+    min_similarity: float = 0.0
+
     max_upload_mb: int = 10
 
     database_url: str = "postgresql://opscopilot:opscopilot@localhost:5434/opscopilot"

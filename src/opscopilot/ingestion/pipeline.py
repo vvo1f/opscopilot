@@ -7,7 +7,7 @@ from pathlib import Path
 from opscopilot import store
 from opscopilot.config import settings
 from opscopilot.embeddings import get_embedder
-from opscopilot.ingestion.chunker import chunk_pages
+from opscopilot.ingestion.chunker import add_headers, chunk_pages, document_header
 from opscopilot.ingestion.parsers import parse_file
 
 log = logging.getLogger(__name__)
@@ -36,6 +36,8 @@ def ingest_file(path: Path, collection: str, filename: str | None = None) -> Ing
 
         pages = parse_file(path)
         chunks = chunk_pages(pages, settings.chunk_size, settings.chunk_overlap)
+        if settings.chunk_header:
+            chunks = add_headers(chunks, document_header(pages))
         vectors = get_embedder().embed_passages([c.text for c in chunks])
 
         document_id = store.insert_document(conn, filename, collection, sha256)

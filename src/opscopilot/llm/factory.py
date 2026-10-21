@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from opscopilot.config import settings
 from opscopilot.llm.client import LLMClient
 
@@ -10,3 +12,9 @@ def make_llm() -> LLMClient:
         model=settings.llm_model,
         timeout=settings.llm_timeout,
     )
+
+
+@lru_cache
+def get_llm() -> LLMClient:
+    """One shared client for the API process."""
+    return make_llm()

@@ -2,16 +2,22 @@ import logging
 import re
 import tempfile
 from contextlib import asynccontextmanager
+from dataclasses import asdict
 from pathlib import Path
 from typing import Annotated
 
 import psycopg
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from pydantic import BaseModel, Field
 
 from opscopilot import store
 from opscopilot.config import settings
 from opscopilot.ingestion.parsers import SUPPORTED, EmptyDocument, UnsupportedFileType
 from opscopilot.ingestion.pipeline import ingest_file
+from opscopilot.llm.client import LLMError
+from opscopilot.llm.factory import get_llm
+from opscopilot.rag.answer import ask
+from opscopilot.rag.retriever import search
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -90,3 +96,28 @@ def get_document(document_id: int):
     if doc is None:
         raise HTTPException(404, "document not found")
     return doc
+
+
+class SearchRequest(BaseModel):
+    query: str = Field(min_length=1)
+    k: int = Field(5, ge=1, le=20)
+    collection: str | None = None
+
+
+class AskRequest(BaseModel):
+    question: str = Field(min_length=1)
+    k: int = Field(5, ge=1, le=20)
+    collection: str | None = None  # "hr" switches to the HR assistant
+
+
+@app.post("/search")
+def search_chunks(req: SearchRequest):
+    return [asdict(s) for s in search(req.query, req.k, req.collection)]
+
+
+@app.post("/ask")
+def ask_question(req: AskRequest):
+    try:
+        return asdict(ask(req.question, get_llm(), req.collection, req.k))
+    except LLMError as exc:
+        raise HTTPException(502, f"language model unavailable: {exc}") from exc

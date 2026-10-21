@@ -54,3 +54,15 @@ def test_chunk_pages_keeps_page_numbers_and_global_index():
     assert [c.index for c in chunks] == list(range(len(chunks)))
     assert chunks[-1] == Chunk(page=2, index=len(chunks) - 1, text="Only a line on page two.")
     assert {c.page for c in chunks} == {1, 2}
+
+
+def test_headers_are_added_only_where_missing():
+    from opscopilot.ingestion.chunker import add_headers, document_header
+
+    pages = [Page(1, "Fattura n. INV-2026-345\nFornitore: Rossi\nTotale 100")]
+    header = document_header(pages)
+    assert header == "Fattura n. INV-2026-345 | Fornitore: Rossi"
+    chunks = [Chunk(1, 0, "Fattura n. INV-2026-345 e il resto"), Chunk(1, 1, "Totale 100")]
+    add_headers(chunks, header)
+    assert chunks[0].text == "Fattura n. INV-2026-345 e il resto"
+    assert chunks[1].text == f"{header}\nTotale 100"

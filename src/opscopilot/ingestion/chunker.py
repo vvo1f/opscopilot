@@ -72,3 +72,24 @@ def chunk_pages(pages, max_chars: int = 300, overlap: int = 60) -> list[Chunk]:
         for text in chunk_text(page.text, max_chars, overlap):
             chunks.append(Chunk(page=page.number, index=len(chunks), text=text))
     return chunks
+
+
+def document_header(pages, max_lines: int = 2, max_chars: int = 160) -> str:
+    """The first non-empty lines of the document (title, parties, invoice number...)."""
+    lines = [ln.strip() for ln in pages[0].text.splitlines() if ln.strip()]
+    return " | ".join(lines[:max_lines])[:max_chars]
+
+
+def add_headers(chunks: list[Chunk], header: str) -> list[Chunk]:
+    """Prefix every chunk that doesn't already start with the document header.
+
+    A dense embedding of "Total: 1.234,56 EUR" says nothing about which invoice
+    it is. Repeating the title in each chunk fixes that, at the cost of a few
+    extra characters per chunk. The setting chunk_header turns it off, so phase 6
+    can measure whether it helps.
+    """
+    first_line = header.split(" | ")[0]
+    for chunk in chunks:
+        if not chunk.text.startswith(first_line):
+            chunk.text = f"{header}\n{chunk.text}"
+    return chunks
