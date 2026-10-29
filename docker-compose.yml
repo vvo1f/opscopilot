@@ -6,12 +6,37 @@ services:
       POSTGRES_PASSWORD: opscopilot
       POSTGRES_DB: opscopilot
     ports:
-      - "5434:5432"
+      - "5434:5432"          # host port 5434: 5432 is often taken by a local Postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opscopilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  # The API in a container: docker compose --profile app up -d --build
+  # Off by default, because the image includes PyTorch and is big. During
+  # development it is lighter to run uvicorn from your venv.
+  api:
+    build: .
+    profiles: ["app"]
+    env_file: .env
+    environment:
+      # inside the compose network the database is reached by service name, on its own port
+      DATABASE_URL: postgresql://opscopilot:opscopilot@db:5432/opscopilot
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets the container reach Ollama on the host
+    volumes:
+      - hf_cache:/root/.cache/huggingface     # the embedding model is downloaded once
+
   # PostGIS is only needed for the text-to-SQL module (Tier 2).
-  # It stays off by default to save RAM: docker compose --profile geo up -d
+  # docker compose --profile geo up -d
   geo_db:
     image: postgis/postgis:16-3.4
     profiles: ["geo"]
@@ -27,3 +52,4 @@ services:
 volumes:
   db_data:
   geo_data:
+  hf_cache:

@@ -3,6 +3,7 @@ Name: opscopilot
 Version: 0.1.0
 Summary: LLM-based assistant for document search, extraction and business process automation
 Requires-Python: >=3.11
+License-File: LICENSE
 Requires-Dist: fastapi
 Requires-Dist: uvicorn[standard]
 Requires-Dist: pydantic>=2
@@ -22,3 +23,4 @@ Requires-Dist: ruff; extra == "dev"
 Provides-Extra: data
 Requires-Dist: faker; extra == "data"
 Requires-Dist: reportlab; extra == "data"
+Dynamic: license-file

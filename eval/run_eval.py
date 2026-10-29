@@ -254,9 +254,11 @@ def cmd_report(args):
             parts += [md_table(flat), ""]
         if data["table"]:
             parts += [md_table(data["table"]), ""]
-    out = RESULTS / "summary.md"
-    out.write_text("\n".join(parts), "utf-8")
-    print(f"wrote {out}")
+    text = "\n".join(parts)
+    for out in (RESULTS / "summary.md", ROOT / "docs" / "results.md"):
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(text, "utf-8")
+        print(f"wrote {out}")
 
 
 def main():

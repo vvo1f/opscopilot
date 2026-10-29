@@ -1,70 +1,115 @@
 # OpsCopilot
 
-LLM-based assistant for internal business processes: document ingestion,
-classification and extraction, semantic search with RAG, and (later) email
-triage and natural-language SQL. Runs locally with Ollama, no paid APIs.
+[![ci](https://github.com/<your-username>/opscopilot/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-username>/opscopilot/actions)
 
-Status: phases 0-6 (setup, data, LLM client, embeddings, ingestion, RAG, classification and extraction, evaluation).
+An assistant for internal business documents. It ingests contracts, invoices, HR policies,
+meeting minutes and technical reports (Italian and English), classifies them, extracts
+structured fields, and answers questions with citations, or says it did not find the answer.
+It runs on free models: Google Gemini's free tier or a local Ollama model, switched in `.env`.
+
+Built as a portfolio project for an LLM-automation internship. All data is synthetic.
+
+## How it works
+
+```
+upload / ingest_folder
+   -> parse (PDF, DOCX, TXT) -> chunk (+ document header) -> embed (e5, local)
+   -> classify + extract fields (LLM, JSON validated by pydantic)
+   -> PostgreSQL + pgvector
+
+question -> embed -> cosine search (pgvector) -> numbered sources -> LLM -> answer [1] or NOT_FOUND
+```
+
+More detail and the design decisions: [docs/architecture.md](docs/architecture.md).
 
 ## Quickstart
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
+git clone https://github.com/<your-username>/opscopilot.git && cd opscopilot
+python -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\Activate.ps1
 pip install -e ".[dev,data,ml]"
-cp env.example .env                 # Windows: copy env.example .env
-
-docker compose up -d               # Postgres + pgvector
-# edit .env: put your Gemini key (or use Ollama, see env.example)
-
-python scripts/llm_ping.py
-python scripts/generate_data.py        # synthetic documents + ground truth + eval sets
-python scripts/ingest_folder.py        # parse, chunk, embed, classify and store them (needs the ml extra + LLM)
-uvicorn opscopilot.main:app --reload   # then open http://localhost:8000/health
-pytest
+cp env.example .env                                   # Windows: copy env.example .env, then add your Gemini key
+docker compose up -d                                  # Postgres + pgvector on host port 5434
+python scripts/generate_data.py && python scripts/ingest_folder.py
+uvicorn opscopilot.main:app                           # API docs at http://localhost:8000/docs
 ```
 
-Embeddings need the `ml` extra (PyTorch). On Windows the default wheel is CPU-only.
-On Linux install the CPU build first to avoid a multi-GB CUDA download:
+No Gemini key? Use Ollama (`ollama pull qwen2.5:3b`) and the commented lines in `env.example`.
+The first ingestion downloads the embedding model (about 470 MB).
+
+## Using it
 
 ```bash
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install -e ".[dev,ml]"
-python scripts/embed_ping.py
+python scripts/ask.py "Quanti giorni di ferie spettano a un dipendente a tempo pieno?"
+```
+```
+Ogni dipendente a tempo pieno ha diritto a 26 giorni di ferie retribuite all'anno [1].
+
+retrieved:
+ * [1] 0.902  hr_leave_it.pdf p.1  'Alpina Systems: Politica ferie e permessi ...'
+   [2] 0.863  hr_leave_it.pdf p.1  ...
+```
+```bash
+python scripts/ask.py "How many days per week is remote work allowed?" --collection hr
+# Remote work is allowed up to 2 days per week, by agreement with your manager [1].
+
+python scripts/ask.py "Qual è la password del Wi-Fi degli ospiti?"
+# Non ho trovato la risposta nei documenti.
 ```
 
-## Layout
-
-```
-src/opscopilot/
-  config.py        settings from .env
-  llm/client.py    OpenAI-compatible client, retries, JSON repair loop
-  llm/factory.py   builds the client from settings
-  embeddings.py    sentence-transformers wrapper
-  main.py          FastAPI app
-  datagen/         synthetic documents, ground truth, eval sets
-  store.py         all SQL (tables, pgvector index, inserts)
-  ingestion/       parsers.py, chunker.py, pipeline.py
-  rag/             retriever.py, answer.py
-  docintel/        schemas.py, analyze.py (classification + extraction)
-  prompts/         *.txt, one file per prompt
-eval/              run_eval.py (all metrics), cache_llm.py (answers cached on disk)
-scripts/           generate_data.py, llm_ping.py, embed_ping.py
-data/              ground_truth/ and eval_sets/ are committed; documents/ is generated
-tests/             unit tests (no LLM, no database needed)
-```
+| Endpoint | What it does |
+|---|---|
+| `POST /documents` | Upload a PDF/DOCX/TXT into a collection; parse, chunk, embed, classify, extract |
+| `GET /documents`, `GET /documents/{id}` | List documents; show label and extracted fields |
+| `POST /search` | Top-k similar chunks with scores |
+| `POST /ask` | Answer with citations; `collection: "hr"` switches to the HR assistant |
+| `GET /health` | Database check |
 
 ## Evaluation
 
+All numbers come from `python eval/run_eval.py ...` (see [docs/results.md](docs/results.md),
+generated by the `report` command). Datasets: 28 synthetic documents, 24 answerable and
+6 unanswerable questions. Because the data is synthetic and small, scores are optimistic
+and differences of a few points are noise.
+
+## Design decisions
+
+- **pgvector instead of a separate vector database.** Vectors, metadata filters and SQL
+  live in one system, which is enough at this scale. All SQL is in `store.py`, so changing it is a one-file job.
+- **Plain SDK instead of LangChain.** Every step (retrieval, prompt, validation) is visible and testable.
+- **One OpenAI-compatible client** for Ollama, Gemini and Groq. Switching provider is an `.env` change.
+- **Validated JSON with a repair loop.** The model's output is checked by pydantic; on failure it sees its
+  own error and tries again. Failures are stored, never fatal.
+- **Contextual chunk headers.** Each chunk repeats the document's first lines, so a chunk with only a total still
+  carries its invoice number. `CHUNK_HEADER=false` turns it off, and the evaluation compares both.
+- **Abstention.** The model must answer `NOT_FOUND` when the sources lack the answer.
+- **Cached evaluation.** LLM replies are saved on disk, so reruns do not spend free-tier quota.
+
+## Limitations
+
+- Synthetic, regular documents and small evaluation sets.
+- Text-based PDFs only: scanned files would need OCR.
+- No authentication or per-user access control (only collections).
+- Small local models are weaker at JSON and Italian than hosted ones.
+- E5 similarity scores sit in a narrow band, so the abstention threshold needs calibrating on the eval set.
+
+## Roadmap
+
+Email triage with human approval, natural-language SQL over PostgreSQL/PostGIS, hybrid (keyword + vector) search,
+a reranker, OCR, background ingestion.
+
+## Development
+
 ```bash
-python eval/run_eval.py retrieval        # hit@k and MRR, no LLM
-python eval/run_eval.py chunks           # chunk size x header sweep, no LLM
-python eval/run_eval.py answers          # RAG answers, 30 LLM calls (cached in eval/cache)
-python eval/run_eval.py answers --prompt rag_plain
-python eval/run_eval.py classification   # reads what ingestion stored
-python eval/run_eval.py extraction
-python eval/run_eval.py report           # writes eval/results/summary.md
+pytest            # 70+ tests; the database tests are skipped when Postgres is down
+ruff check .
+python scripts/check_secrets.py --history     # before every push
 ```
 
-The datasets are small and synthetic (28 documents, 30 questions), so scores are
-optimistic and differences of a few points are noise.
+Layout: `src/opscopilot/` (config, `llm/`, `embeddings.py`, `store.py`, `ingestion/`, `rag/`, `docintel/`,
+`evaluation/`, `datagen/`, `prompts/*.txt`), `scripts/`, `eval/`, `tests/`, `docs/`.
+
+Docker: `docker compose --profile app up -d --build` runs the API in a container
+(see [docs/deployment.md](docs/deployment.md)).
+
+MIT license.
