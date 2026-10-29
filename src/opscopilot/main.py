@@ -4,7 +4,7 @@ import tempfile
 from contextlib import asynccontextmanager
 from dataclasses import asdict
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal
 
 import psycopg
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -18,6 +18,8 @@ from opscopilot.llm.client import LLMError
 from opscopilot.llm.factory import get_llm
 from opscopilot.rag.answer import ask
 from opscopilot.rag.retriever import search
+from opscopilot.triage.executor import simulate
+from opscopilot.triage.service import triage_email
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -123,3 +125,48 @@ def ask_question(req: AskRequest):
         return asdict(ask(req.question, get_llm(), req.collection, req.k))
     except LLMError as exc:
         raise HTTPException(502, f"language model unavailable: {exc}") from exc
+
+
+class TriageRequest(BaseModel):
+    sender: str = Field(min_length=1, max_length=200)
+    subject: str = Field(max_length=300)
+    body: str = Field(min_length=1, max_length=20000)
+
+
+class DecisionRequest(BaseModel):
+    decision: Literal["approve", "reject"]
+
+
+@app.post("/emails/triage")
+def triage(req: TriageRequest):
+    """Propose an action for an email. Nothing is executed until a person approves it."""
+    try:
+        proposal, flags = triage_email(req.sender, req.subject, req.body, get_llm())
+    except LLMError as exc:
+        raise HTTPException(502, f"could not triage the email: {exc}") from exc
+    with store.connect() as conn:
+        return store.insert_proposal(conn, req.sender, req.subject, req.body,
+                                     proposal.model_dump(), suspicious=bool(flags))
+
+
+@app.get("/emails/proposals")
+def list_email_proposals(status: Literal["pending", "approved", "rejected"] | None = None):
+    with store.connect() as conn:
+        return store.list_proposals(conn, status)
+
+
+@app.post("/emails/proposals/{proposal_id}/decision")
+def decide(proposal_id: int, req: DecisionRequest):
+    with store.connect() as conn:
+        proposal = store.get_proposal(conn, proposal_id)
+        if proposal is None:
+            raise HTTPException(404, "proposal not found")
+        if proposal["status"] != "pending":
+            raise HTTPException(409, f"proposal is already {proposal['status']}")
+        if req.decision == "approve":
+            updated = store.decide_proposal(conn, proposal_id, "approved", simulate(proposal))
+        else:
+            updated = store.decide_proposal(conn, proposal_id, "rejected", None)
+    if updated is None:  # someone decided it between our check and our update
+        raise HTTPException(409, "proposal was decided in the meantime")
+    return updated

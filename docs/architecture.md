@@ -17,6 +17,7 @@ Client (Swagger UI / curl / scripts)
 ## Data model
 
 - `documents(id, filename, collection, sha256 UNIQUE, label, fields JSONB, created_at)`
+- `email_proposals(id, sender, subject, body, action, priority, department, summary, draft_reply, suspicious, status, execution_log, ...)`
 - `chunks(id, document_id -> documents, page, chunk_index, content, embedding vector(EMBEDDING_DIM))`
 - HNSW index on `chunks.embedding` with cosine distance.
 
@@ -32,6 +33,11 @@ embed in batches, classify and extract with the LLM, and store everything in one
 **Question answering.** Embed the question with the same model, order chunks by cosine distance (optionally in one
 collection), put the top k into a numbered prompt, and ask the model to answer only from them and cite `[n]`.
 `NOT_FOUND`, an empty result or a score below `MIN_SIMILARITY` produces a fixed "not found" answer.
+
+**Email triage.** The email goes into the prompt between `<email>` tags (a closing tag inside the email is neutralised).
+The model must answer with a `ProposedAction` whose action, priority and department are fixed lists; invalid output is
+sent back for repair, and after three failures nothing is stored. The proposal is saved as `pending` in
+`email_proposals`; approving it runs `triage/executor.py`, which only returns a description of what it would do.
 
 **Evaluation.** `eval/run_eval.py` rebuilds the index in memory (same chunking and embeddings), so chunk size and
 header experiments never touch the database. Classification and extraction are scored from what ingestion stored.

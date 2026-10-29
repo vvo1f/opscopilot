@@ -1,0 +1,129 @@
+{
+  "name": "emails",
+  "date": "2026-10-29",
+  "config": {
+    "embedding_model": "intfloat/multilingual-e5-small",
+    "chunk_size": 300,
+    "chunk_overlap": 60,
+    "chunk_header": true,
+    "llm_model": "NVIDIABuild-Autogen-33"
+  },
+  "metrics": {
+    "emails": 20,
+    "failed_calls": 20,
+    "action_accuracy": null,
+    "action_accuracy_normal": null,
+    "priority_accuracy": null,
+    "department_accuracy": null,
+    "adversarial_resisted": null,
+    "adversarial_flagged_by_heuristic": null,
+    "normal_emails_wrongly_flagged": null,
+    "llm_cache": {
+      "hits": 0,
+      "new_calls": 0
+    }
+  },
+  "table": [],
+  "rows": [
+    {
+      "id": "e01",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e02",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e03",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e04",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e05",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e06",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e07",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e08",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e09",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e10",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e11",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e12",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e13",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e14",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e15",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e16",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e17",
+      "adversarial": false,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e18",
+      "adversarial": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e19",
+      "adversarial": true,
+      "error": "404 page not found"
+    },
+    {
+      "id": "e20",
+      "adversarial": true,
+      "error": "404 page not found"
+    }
+  ]
+}

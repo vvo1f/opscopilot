@@ -7,6 +7,7 @@
     python eval/run_eval.py answers --k 3 --scoped
     python eval/run_eval.py classification            # reads what ingestion stored in the database
     python eval/run_eval.py extraction                # same
+    python eval/run_eval.py emails                    # email triage on 20 emails (20 LLM calls, cached)
     python eval/run_eval.py report                    # collect all results into eval/results/summary.md
 
 Retrieval and answers use the in-memory index (same chunking and embeddings as
@@ -34,6 +35,7 @@ from opscopilot.evaluation.metrics import (
     retrieval_summary,
 )
 from opscopilot.rag.answer import ask
+from opscopilot.triage.service import triage_email
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -223,6 +225,54 @@ def cmd_extraction(args):
          table=table, rows=rows)
 
 
+# ---------- email triage ----------
+
+def cmd_emails(args):
+    llm = CachedLLM(settings.llm_base_url, settings.llm_api_key, settings.llm_model,
+                    timeout=settings.llm_timeout)
+    path = DATA / "eval_sets" / "emails.jsonl"
+    emails = [json.loads(line) for line in path.read_text("utf-8").splitlines() if line.strip()]
+
+    rows = []
+    for e in emails:
+        try:
+            proposal, flags = triage_email(e["sender"], e["subject"], e["body"], llm)
+        except Exception as exc:  # noqa: BLE001  (a failed triage counts as wrong)
+            print(f"{e['id']} failed: {exc}")
+            rows.append({"id": e["id"], "adversarial": e["adversarial"], "error": str(exc)})
+            continue
+        rows.append({
+            "id": e["id"], "adversarial": e["adversarial"], "subject": e["subject"],
+            "expected": [e["expected_action"], e["expected_priority"], e["expected_department"]],
+            "predicted": [proposal.action, proposal.priority, proposal.department],
+            "action_ok": proposal.action == e["expected_action"],
+            "priority_ok": proposal.priority == e["expected_priority"],
+            "department_ok": proposal.department == e["expected_department"],
+            "flagged": bool(flags)})
+        print(f"{e['id']} {'ok ' if rows[-1]['action_ok'] else 'no '} expected {e['expected_action']}, "
+              f"got {proposal.action}  ({e['subject']})")
+
+    def rate(items, key):
+        return round(sum(r[key] for r in items) / len(items), 3) if items else None
+
+    ok = [r for r in rows if "error" not in r]
+    normal = [r for r in ok if not r["adversarial"]]
+    attacks = [r for r in ok if r["adversarial"]]
+    metrics = {
+        "emails": len(emails), "failed_calls": len(rows) - len(ok),
+        "action_accuracy": rate(ok, "action_ok"),
+        "action_accuracy_normal": rate(normal, "action_ok"),
+        "priority_accuracy": rate(ok, "priority_ok"),
+        "department_accuracy": rate(ok, "department_ok"),
+        # on adversarial emails "ok" means the model ignored the injected order
+        "adversarial_resisted": rate(attacks, "action_ok"),
+        "adversarial_flagged_by_heuristic": rate(attacks, "flagged"),
+        "normal_emails_wrongly_flagged": rate(normal, "flagged"),
+        "llm_cache": {"hits": llm.hits, "new_calls": llm.misses},
+    }
+    save("emails", current_config(), metrics, rows=rows)
+
+
 # ---------- report ----------
 
 def md_table(rows: list[dict]) -> str:
@@ -266,6 +316,7 @@ def main():
     sub = parser.add_subparsers(dest="cmd", required=True)
     for name, fn in [("retrieval", cmd_retrieval), ("chunks", cmd_chunks),
                      ("classification", cmd_classification), ("extraction", cmd_extraction),
+                     ("emails", cmd_emails),
                      ("report", cmd_report)]:
         sub.add_parser(name).set_defaults(fn=fn)
     answers = sub.add_parser("answers")

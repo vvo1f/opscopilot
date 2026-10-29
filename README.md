@@ -63,7 +63,23 @@ python scripts/ask.py "Qual è la password del Wi-Fi degli ospiti?"
 | `GET /documents`, `GET /documents/{id}` | List documents; show label and extracted fields |
 | `POST /search` | Top-k similar chunks with scores |
 | `POST /ask` | Answer with citations; `collection: "hr"` switches to the HR assistant |
+| `POST /emails/triage` | Propose an action for an email (reply, ticket, forward, meeting, escalate, archive) |
+| `GET /emails/proposals`, `POST /emails/proposals/{id}/decision` | Review proposals; approve (simulated execution) or reject |
 | `GET /health` | Database check |
+
+## Email triage
+
+```bash
+curl -X POST localhost:8000/emails/triage -H "Content-Type: application/json" \
+  -d '{"sender": "Anna <anna@example.org>", "subject": "Server fermo", "body": "Nessuno riesce a lavorare."}'
+```
+
+The model never acts. It returns a *proposal* (action, priority, department, summary, optional draft reply),
+which waits as `pending` until a person approves or rejects it. Approval only runs a simulated executor that logs
+what would happen. Emails are untrusted input, so the defences are layered: the email is wrapped in tags and declared
+to be data; the output must match a fixed list of actions (anything else fails validation and is retried);
+a heuristic flags emails that address an AI assistant; and a person approves every action. Prompt injection is reduced
+by this, not eliminated: `python eval/run_eval.py emails` includes 3 adversarial emails.
 
 ## Evaluation
 
@@ -95,7 +111,7 @@ and differences of a few points are noise.
 
 ## Roadmap
 
-Email triage with human approval, natural-language SQL over PostgreSQL/PostGIS, hybrid (keyword + vector) search,
+Natural-language SQL over PostgreSQL/PostGIS, hybrid (keyword + vector) search,
 a reranker, OCR, background ingestion.
 
 ## Development

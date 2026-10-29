@@ -39,6 +39,23 @@ SCHEMA = [
     "CREATE INDEX IF NOT EXISTS chunks_document_idx ON chunks (document_id)",
     # HNSW = approximate nearest-neighbour graph index; vector_cosine_ops makes
     # it match the <=> (cosine distance) operator we query with in phase 4.
+    # Email triage: every proposal waits here until a person approves or rejects it.
+    """CREATE TABLE IF NOT EXISTS email_proposals (
+        id SERIAL PRIMARY KEY,
+        sender TEXT NOT NULL,
+        subject TEXT NOT NULL,
+        body TEXT NOT NULL,
+        action TEXT NOT NULL,
+        priority TEXT NOT NULL,
+        department TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        draft_reply TEXT,
+        suspicious BOOLEAN NOT NULL DEFAULT FALSE,
+        status TEXT NOT NULL DEFAULT 'pending',
+        execution_log TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+        decided_at TIMESTAMPTZ
+    )""",
     "CREATE INDEX IF NOT EXISTS chunks_embedding_idx ON chunks USING hnsw (embedding vector_cosine_ops)",
 ]
 
@@ -68,6 +85,7 @@ def init_schema() -> None:
 def reset_schema() -> None:
     """Drop both tables. Needed when the embedding model (and its dimension) changes."""
     with psycopg.connect(settings.database_url) as conn:
+        conn.execute("DROP TABLE IF EXISTS email_proposals")
         conn.execute("DROP TABLE IF EXISTS chunks")
         conn.execute("DROP TABLE IF EXISTS documents")
     init_schema()
@@ -149,3 +167,39 @@ def search_chunks(conn: psycopg.Connection, query_vec, k: int, collection: str |
             """,
             {"q": query_vec, "collection": collection, "k": k})
         return cur.fetchall()
+
+
+def insert_proposal(conn: psycopg.Connection, sender: str, subject: str, body: str,
+                    proposal: dict, suspicious: bool) -> dict:
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            "INSERT INTO email_proposals (sender, subject, body, action, priority, department, "
+            "summary, draft_reply, suspicious) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) "
+            "RETURNING *",
+            (sender, subject, body, proposal["action"], proposal["priority"],
+             proposal["department"], proposal["summary"], proposal["draft_reply"], suspicious))
+        return cur.fetchone()
+
+
+def list_proposals(conn: psycopg.Connection, status: str | None = None) -> list[dict]:
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute("SELECT * FROM email_proposals WHERE %s::text IS NULL OR status = %s "
+                    "ORDER BY id DESC", (status, status))
+        return cur.fetchall()
+
+
+def get_proposal(conn: psycopg.Connection, proposal_id: int) -> dict | None:
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute("SELECT * FROM email_proposals WHERE id = %s", (proposal_id,))
+        return cur.fetchone()
+
+
+def decide_proposal(conn: psycopg.Connection, proposal_id: int, status: str,
+                    execution_log: str | None) -> dict | None:
+    """Move a pending proposal to approved/rejected. Returns None if it was not pending."""
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            "UPDATE email_proposals SET status = %s, execution_log = %s, decided_at = now() "
+            "WHERE id = %s AND status = 'pending' RETURNING *",
+            (status, execution_log, proposal_id))
+        return cur.fetchone()
